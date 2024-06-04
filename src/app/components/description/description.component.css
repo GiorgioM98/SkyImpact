@@ -1,0 +1,330 @@
+.body {
+  background: #000428;
+  background: -webkit-linear-gradient(to right, #004e92, #000428);
+  background: linear-gradient(to right, #004e92, #000428);
+}
+.container {
+  display: flex;
+  color: white;
+  height: 100%;
+  margin-bottom: 4em;
+  margin-top: 3em;
+  animation: slide-in 1s ease-in-out forwards;
+}
+
+.divTitle {
+  text-align: left;
+  width: 50%;
+  margin-left: 3em;
+  margin-top: 3em;
+}
+
+#title {
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+  font-size: 3em;
+  line-height: 1.2;
+}
+
+.divImgAirplane {
+  width: 50%;
+  margin-left: 2em;
+  display: flex;
+  align-items: center;
+}
+
+.img {
+  background-image: url("../../../assets/pngwing.com.png");
+  margin-top: 0;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+}
+
+.text {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 1.5em;
+  line-height: 1.2;
+}
+
+.dates {
+  width: 100%;
+  height: 8em;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 3em;
+  margin-bottom: 6em;
+}
+
+.date {
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+  font-size: 2em;
+  text-align: center;
+}
+
+.underline {
+  width: 40%;
+  height: 0.3em;
+  background-color: white;
+  margin-top: -1em;
+}
+
+/* .example-spacer {
+  height: 3em;
+} */
+
+.line {
+  margin: auto;
+  width: 90%;
+  background-color: red;
+  height: 0.1em;
+  animation: expand-line 2s ease-in-out forwards;
+}
+
+.footer {
+  height: 5em;
+  width: 100%;
+  color: white;
+  background-color: #002244;
+  display: inline-block;
+  text-align: center;
+  padding-top: 1em;
+  padding-bottom: 0.5em;
+  text-decoration: none;
+}
+
+a {
+  color: white;
+}
+/* ANIMAZIONE */
+@keyframes expand-line {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 90%;
+  }
+}
+
+/* ANIMAZIONE SLIDE-IN */
+@keyframes slide-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+
+/* desktop */
+@media screen and (min-width: 768px) and (max-width: 1020px) {
+  .dates {
+    width: 100%;
+    height: 4em;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 3em;
+    margin-bottom: 5em;
+  }
+
+  .date {
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    font-size: 1em;
+    text-align: center;
+  }
+  .example-spacer {
+    height: 300px;
+  }
+
+}
+
+/* tablet */
+@media only screen and (min-width: 600px) and (max-width: 767px){
+  .container{
+    flex-direction: column;
+  }
+
+  .divTitle {
+    text-align: center;
+    width: 90%;
+    margin-top: 3em!important;
+    margin: auto;
+  }
+
+  #title {
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    font-size: 1.5em;
+    line-height: 1.2;
+  }
+
+  .divImgAirplane {
+    height: 300px;
+    width: 90%;
+    display: flex;
+    margin: auto;
+    margin-top: 1em!important;
+
+
+  }
+
+  .img {
+    background-image: url("../../../assets/pngwing.com.png");
+    margin-top: 0;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+  }
+
+  .text {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 1em;
+    line-height: 1.2;
+  }
+
+  .dates {
+    width: 100%;
+    height: 4em;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 3em;
+    margin-bottom: 5em;
+  }
+
+  .date {
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    font-size: 1em;
+    text-align: center;
+  }
+
+  .example-spacer {
+    height: 300px;
+  }
+
+  .footer {
+    height: 5em;
+    width: 100%;
+    color: white;
+    background-color: #002244;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+  }
+
+}
+
+/* mobile */
+@media only screen and (max-width: 599px)  {
+  .container{
+    flex-direction: column;
+  }
+
+  .divTitle {
+    text-align: center;
+    width: 90%;
+    margin-top: 3em!important;
+    margin: auto;
+  }
+
+  #title {
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    font-size: 1.5em;
+    line-height: 1.2;
+  }
+
+  .divImgAirplane {
+    height: 300px;
+    width: 90%;
+    display: flex;
+    margin: auto;
+    margin-top: 1em!important;
+
+
+  }
+
+  .img {
+    background-image: url("../../../assets/pngwing.com.png");
+    margin-top: 0;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+  }
+
+  .text {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 1em;
+    line-height: 1.2;
+  }
+
+  .dates {
+    width: 100%;
+    height: 4em;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 3em;
+    margin-bottom: 5em;
+  }
+
+  .date {
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    font-size: 1em;
+    text-align: center;
+
+
+  }
+
+  .example-spacer {
+    height: 450px;
+  }
+
+  .footer {
+    height: auto;
+    width: 100%;
+    color: white;
+    background-color: #002244;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+  }
+
+}

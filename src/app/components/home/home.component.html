@@ -1,0 +1,97 @@
+<div class="body">
+
+  <!-- decoration line -->
+  <div class="line"></div>
+
+  <!-- first container -->
+  <div class="container">
+    <!-- form container footprint calculator -->
+    <div class="formContainer">
+      <h1>Calculate your footprint!</h1>
+      <form class="form" [formGroup]="flightForm" (ngSubmit)="onSubmit()">
+        <!-- input origin -->
+        <mat-form-field appearance="fill">
+          <mat-label>Origin</mat-label>
+          <!-- event input -->
+          <input matInput (input)="getOriginAirport($event)" type="text" name="origin0" formControlName="origin0">
+          <p class="alert" *ngIf="!flightForm.get('origin0')?.valid && flightForm.get('origin0')?.touched">Insert origin airport please!</p>
+          <!-- list of airports -->
+          <div *ngIf="originAirport">
+            <ul>
+              <li (click)="selectOriginAirport(originAirport)">
+                {{ originAirport.attributes.iata }} {{ originAirport.attributes.name }}
+                {{ originAirport.attributes.city }}
+              </li>
+            </ul>
+          </div>
+        </mat-form-field>
+        <!-- input destination -->
+        <mat-form-field>
+          <mat-label>Destination</mat-label>
+          <!-- event input -->
+          <input matInput (input)="getDestinationAirport($event)" type="text" name="destination0"
+            formControlName="destination0">
+            <p class="alert" *ngIf="!flightForm.get('destination0')?.valid && flightForm.get('destination0')?.touched">Insert destination airport please!</p>
+          <!-- list of airports -->
+          <div *ngIf="destinationAirport">
+            <ul>
+              <li (click)="selectDestinationAirport(destinationAirport)">
+                {{ destinationAirport.attributes.iata }} {{ destinationAirport.attributes.city }} {{
+                destinationAirport.attributes.name }}
+              </li>
+            </ul>
+          </div>
+        </mat-form-field>
+        <!-- input travel class -->
+        <mat-form-field appearance="fill">
+          <mat-label>Travel class</mat-label>
+          <mat-select formControlName="cabin_class">
+            <mat-option value="economy">ECONOMY</mat-option>
+            <mat-option value="premium_economy">PREMIUM ECONOMY</mat-option>
+            <mat-option value="business">BUSINESS</mat-option>
+            <mat-option value="first">FIRST</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- input number of passeggers -->
+        <mat-form-field appearance="fill">
+          <mat-label>Number of passeggers</mat-label>
+          <mat-select formControlName="numeroPasseggeri">
+            <mat-option value="1">1</mat-option>
+            <mat-option value="2">2</mat-option>
+            <mat-option value="3">3</mat-option>
+            <mat-option value="4">4</mat-option>
+            <mat-option value="5">5</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- button -->
+        <button mat-flat-button class="btn" type="submit">Calculate now!</button>
+        <p class="info">*To calculate the footprint for more than 1 passenger, click 2 times "Calculate now!"</p>
+      </form>
+    </div>
+
+
+    <!-- footprint results -->
+    <div class="results">
+      <!-- ngif footprint available -->
+      <span class="footprint" *ngIf="footprint">
+        <h1 id="title">Here is the amount of CO2 produced by your air travel</h1>
+        <h1>Footprint for a passenger:{{ footprint }}</h1>
+        <h1 *ngIf="footprint=== 0">There is no footprint produced by your air travel</h1>
+      </span>
+      <!-- ngif passengers footprint available -->
+      <span class="calculationForPassengers" *ngIf="risultatoFootprint">
+        <h1>Footprint for {{ numeroPasseggeri }} passengers: {{ risultatoFootprint }}</h1>
+      </span>
+    </div>
+  </div>
+
+  <!-- decoration line -->
+  <div class="line"></div>
+
+  <!-- footer -->
+  <div class="footer">
+    <h3>Developed by GM (Giorgio Marian) 2024</h3>
+    <h3>Profilo LinkedIn <a href="https://www.linkedin.com/in/giorgio-marian" target="_blank">qui!</a></h3>
+  </div>
+
+</div>

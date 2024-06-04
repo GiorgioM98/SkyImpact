@@ -1,0 +1,132 @@
+.navbar {
+  background: #000428;
+  background: -webkit-linear-gradient(to right, #004e92, #000428);
+  background: linear-gradient(to right, #004e92, #000428);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  margin-top: 2em;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar li {
+  margin: 0 20px;
+  position: relative;
+}
+
+.navbar a {
+  display: block;
+  color: white;
+  text-align: center;
+  margin-bottom: 1em;
+  text-decoration: none;
+  font-size: 1.2em;
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+  position: relative;
+}
+
+.navbar a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -0.5em;
+  left: 0;
+  background-color: white;
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.navbar a:hover::after {
+  visibility: visible;
+  width: 100%;
+}
+
+#title {
+  color: white;
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+  font-size: 3em;
+  margin-top: 0.5em;
+  position: absolute;
+  left: 2em;
+  transition: transform 0.5s ease-in-out;
+}
+
+#title:hover {
+  box-shadow: 0 10px 20px #000000;
+}
+
+/* mobile */
+@media only screen and (max-width: 599px) {
+  .navbar {
+    flex-direction: column;
+  }
+
+  .navbar ul {
+    flex-direction: column;
+  }
+
+  .navbar a {
+    font-size: 1em;
+  }
+
+  #title {
+    font-size: 1em;
+    left: 0;
+  }
+}
+
+/* tablet */
+@media only screen and (min-width: 600px) and (max-width: 767px) {
+  .navbar {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .navbar ul {
+    flex-direction: row;
+  }
+
+  .navbar a {
+    font-size: 1.2em;
+  }
+
+  #title {
+    font-size: 2em;
+    left: 1em;
+  }
+}
+
+/* deskotp */
+@media only screen and (min-width: 768px) {
+  .navbar {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .navbar ul {
+    flex-direction: row;
+  }
+
+  .navbar a {
+    font-size: 1.2em;
+  }
+
+  #title {
+    font-size: 3em;
+    left: 2em;
+  }
+}
