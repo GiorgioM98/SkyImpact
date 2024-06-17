@@ -1,7 +1,7 @@
 ## Overview
 
 The platform aims to inform users about the amount of CO2 pollution resulting from their air travel.
-It is possible to view it directly online at the following link: 
+It is possible to view it directly online at the following link: https://skyimpact-33add.web.app
 
 
 ## Dashboards
