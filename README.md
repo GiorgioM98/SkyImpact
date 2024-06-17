@@ -4,18 +4,18 @@ The platform aims to inform users about the amount of CO2 pollution resulting fr
 It is possible to view it directly online at the following link: 
 
 
-### Dashboards
+## Dashboards
 
 The design of the platform was created with a minimalist and modern style. 
 The dashboard features colors designed specifically for the type of application.
 
 
-## Home
+### Home
 
 The Home is characterized by a brief general description of the platform, followed by concise data on various airlines present on the market
 
 
-## Footprint
+### Footprint
 
 In this section you can calculate your footprint resulting from air travel.
 In the left box you must set the place of origin, destination, the class in which you are traveling (chosen from those available) and the number of passengers if you want to directly calculate the total.
@@ -23,7 +23,7 @@ Finally just press the ''Calculate now'' button.
 The results will appear in the right pane.
 
 
-## Footer
+### Footer
 
 The footer features the developer's info with the link to his LinkedIn profile.
 
