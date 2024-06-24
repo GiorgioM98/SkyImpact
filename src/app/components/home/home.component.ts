@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../../servizi/api.service';
+import { error } from 'console';
 
 @Component({
   selector: 'app-home',
@@ -48,6 +49,10 @@ export class HomeComponent implements OnInit {
         // console.log("results origin:", this.resultsOrigin);
       });
     }
+    (error: any) => {
+      alert("Error in getOriginAirport: " + error);
+      console.error(error);
+    }
   }
 
   getDestinationAirport(event: Event): void {
@@ -60,6 +65,10 @@ export class HomeComponent implements OnInit {
         this.destinationError = this.resultsDestination.length === 0;
         // console.log("results destination:", this.resultsDestination);
       });
+    }
+    (error: any) => {
+      alert("Error in getDestinationAirport: " + error);
+      console.error(error);
     }
   }
 
@@ -108,9 +117,11 @@ export class HomeComponent implements OnInit {
     this.apiservice.getFlightFootprint(params).subscribe((data: any) => {
       this.footprintResults = data;
       this.footprint = this.footprintResults.footprint;
-      this.risultatoFootprint = this.moltiplicaPasseggeri(this.footprint, numeroPasseggeri);
-    });
+    }
+  );
 
+
+    this.risultatoFootprint = this.moltiplicaPasseggeri(this.footprint, numeroPasseggeri);
     this.numeroPasseggeri = numeroPasseggeri;
   }
 

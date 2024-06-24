@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { AirportResponse } from '../model/airport.model';
 
 @Injectable({
   providedIn: 'root'
