@@ -1,36 +1,30 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { Validators } from '@angular/forms';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../../servizi/api.service';
-import { Airport } from '../../model/airport.model';
-
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
-
   flightForm!: FormGroup;
-  originAirport!: Airport | null;
-  destinationAirport!: Airport | null;
-  airport!: Airport | null;
+  originAirport: any | null = null;
+  destinationAirport: any | null = null;
   query: string = '';
-  results: any;
+  resultsOrigin: any[] = [];
+  resultsDestination: any[] = [];
   footprintResults: any = {};
-  footprint!: number
-  risultatoFootprint: any
-  numeroPasseggeri!: number;
-
+  footprint!: number;
+  risultatoFootprint!: number;
+  numeroPasseggeri: any;
+  airports: any[] = [];
+  originError: boolean = false;
+  destinationError: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private apiservice: ApiService) { }
 
-
   ngOnInit(): void {
-    // controllo form
     this.flightForm = this.formBuilder.group({
       origin0: ['', [Validators.required]],
       destination0: ['', [Validators.required]],
@@ -41,96 +35,66 @@ export class HomeComponent implements OnInit {
       currency1: ['SEK', [Validators.required]],
       currency2: ['USD', [Validators.required]],
     });
-    // console.log(this.flightForm.value);
-
   }
-
 
   getOriginAirport(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const query = inputElement.value.toUpperCase();
-    // console.log(query);
 
     if (query.length > 0) {
-      this.apiservice.getAirport(query).subscribe((data: any) => {
-        this.results = data;
-        // console.log('aeroporti:', this.results);
-        if (data && data.data) {
-          this.originAirport = data.data;
-          // console.log('attributi aeroporto:', this.originAirport?.attributes);
-          // console.log('id aeroporto:', this.originAirport?.id);
-        } else {
-          console.error('Errore nel caricamento degli aeroporti', data);
-          this.originAirport = null;
-        }
+      this.apiservice.getAllAirports(query).subscribe((data: any) => {
+        this.resultsOrigin = data;
+        this.originError = this.resultsOrigin.length === 0;
+        // console.log("results origin:", this.resultsOrigin);
       });
-    } else {
-      this.originAirport = null;
     }
   }
 
   getDestinationAirport(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const query = inputElement.value.toUpperCase();
-    // console.log(query);
 
     if (query.length > 0) {
-      this.apiservice.getAirport(query).subscribe((data: any) => {
-        this.results = data;
-        // console.log('aeroporti:', this.results);
-        if (data && data.data) {
-          this.destinationAirport = data.data;
-          // console.log('attributi aeroporto:', this.destinationAirport?.attributes);
-          // console.log('id aeroporto:', this.destinationAirport?.id);
-        } else {
-          console.error('Errore nel caricamento degli aeroporti', data);
-          this.destinationAirport = null;
-        }
+      this.apiservice.getAllAirports(query).subscribe((data: any) => {
+        this.resultsDestination = data;
+        this.destinationError = this.resultsDestination.length === 0;
+        // console.log("results destination:", this.resultsDestination);
       });
-    } else {
-      this.destinationAirport = null;
     }
   }
 
-  selectOriginAirport(originAirport: Airport) {
-    const iata = originAirport.attributes.iata;
-    // const name = originAirport.attributes.name;
-    // const city = originAirport.attributes.city;
+  selectOriginAirport(originAirport: any) {
+    const iata = originAirport.code;
     this.query = `${iata}`;
     this.flightForm.patchValue({
       origin0: this.query,
     });
-    // console.log(this.query);
     this.originAirport = null;
+    this.originError = false;
+    this.resultsOrigin = [];
   }
 
-
-  selectDestinationAirport(destinationAirport: Airport) {
-    const iata = destinationAirport.attributes.iata;
-    // const name = destinationAirport.attributes.name;
-    // const city = destinationAirport.attributes.city;
+  selectDestinationAirport(destinationAirport: any) {
+    const iata = destinationAirport.code;
     this.query = `${iata}`;
     this.flightForm.patchValue({
       destination0: this.query,
     });
-    // console.log(this.query);
     this.destinationAirport = null;
+    this.destinationError = false;
+    this.resultsDestination = [];
   }
 
-
-
   onSubmit() {
-    // dati presi dall'input
     const origin0 = this.flightForm.value.origin0;
-    const destination0 = this.flightForm.value.
-      destination0;
+    const destination0 = this.flightForm.value.destination0;
     const origin1 = this.flightForm.value.destination0;
     const destination1 = this.flightForm.value.origin0;
     const cabin_class = this.flightForm.value.cabin_class;
     const numeroPasseggeri = this.flightForm.value.numeroPasseggeri;
-    const currency1 = this.flightForm.value.currency1;
-    const currency2 = this.flightForm.value.currency2;
-    // console.log('onSubmit effettuato:', origin0, destination0, origin1, destination1, numeroPasseggeri, currency1, currency2, cabin_class);
+    const currency1 = "SEK";
+    const currency2 = "USD";
+    console.log(origin0, destination0, origin1, destination1, cabin_class, numeroPasseggeri, currency1, currency2);
 
     const params = {
       'segments[0][origin]': origin0,
@@ -144,39 +108,18 @@ export class HomeComponent implements OnInit {
     this.apiservice.getFlightFootprint(params).subscribe((data: any) => {
       this.footprintResults = data;
       this.footprint = this.footprintResults.footprint;
-      // console.log('footprint x1 persona:', this.footprint);
+      this.risultatoFootprint = this.moltiplicaPasseggeri(this.footprint, numeroPasseggeri);
     });
 
-
-    setTimeout(() => {
-      const calcoloFootprint = this.moltiplicaPasseggeri(this.footprint, numeroPasseggeri);
-      this.risultatoFootprint = calcoloFootprint;
-      this.numeroPasseggeri = numeroPasseggeri;
-    }, 1000);
-
-    setTimeout(() => {
-      this.flightForm.reset();
-    }, 10000);
+    this.numeroPasseggeri = numeroPasseggeri;
   }
 
   moltiplicaPasseggeri(footprint: number, numeroPasseggeri: number) {
-    if (numeroPasseggeri > 1) {
+    if (numeroPasseggeri > 2) {
       const risultatoFootprint = footprint * numeroPasseggeri;
-      // console.log('footprint:', footprint);
-      // console.log('numero di passeggeri:', numeroPasseggeri);
-      // console.log('risultato moltiplicato per numero di passeggeri: ', risultatoFootprint);
-      return risultatoFootprint
+      return risultatoFootprint;
     } else {
-      if (this.risultatoFootprint === null) {
-        alert("errore")
-      } else {
-        return this.risultatoFootprint
-      }
+      return 0;
     }
-
   }
 }
-
-
-
-

@@ -1,4 +1,10 @@
 // first response from api
+export interface AirportResponse1 {
+  city: string;
+  iata: string;
+  name: string;
+}
+
 export interface AirportResponse {
   data: Airport;
 }
