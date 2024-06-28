@@ -1,128 +1,104 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule } from '@angular/material/button';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home.component';
 import { ApiService } from '../../servizi/api.service';
 import { of } from 'rxjs';
-import { By } from '@angular/platform-browser';
-import { AirportResponse } from '../../model/airport.model';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
   let apiService: ApiService;
+  let httpTestingController: HttpTestingController;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        ReactiveFormsModule,
         HttpClientTestingModule,
         MatFormFieldModule,
         MatInputModule,
         MatSelectModule,
-        FormsModule,
-        ReactiveFormsModule,
-        NoopAnimationsModule
+        MatButtonModule,
+        BrowserAnimationsModule
       ],
       declarations: [HomeComponent],
       providers: [ApiService]
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
     apiService = TestBed.inject(ApiService);
+    httpTestingController = TestBed.inject(HttpTestingController);
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    httpTestingController.verify();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have the correct form title', () => {
-    const formTitle = fixture.debugElement.query(By.css('.formContainer h1')).nativeElement;
-    expect(formTitle.textContent).toContain('Calculate your footprint!');
+  it('should get origin airports', () => {
+    const mockAirports = [{ city: 'Milan', code: 'MXP' }];
+    spyOn(apiService, 'getAllAirports').and.returnValue(of(mockAirports));
+
+    component.getOriginAirport({ target: { value: 'Mil' } } as any);
+
+    expect(component.resultsOrigin).toEqual(mockAirports);
+    expect(component.originError).toBeFalse();
   });
 
-  it('should have all form fields and submit button', () => {
-    const formFields = fixture.debugElement.queryAll(By.css('mat-form-field'));
-    expect(formFields.length).toBe(4); // 5 form fields
+  it('should handle origin airport not found', () => {
+    spyOn(apiService, 'getAllAirports').and.returnValue(of([]));
 
-    const submitButton = fixture.debugElement.query(By.css('.btn')).nativeElement;
-    expect(submitButton.textContent).toBe('Calculate now!');
+    component.getOriginAirport({ target: { value: 'XYZ' } } as any);
+
+    expect(component.resultsOrigin.length).toBe(0);
+    expect(component.originError).toBeTrue();
   });
 
-  it('should display origin airport suggestions', () => {
-    const input = fixture.debugElement.query(By.css('input[name="origin0"]')).nativeElement;
-    input.value = 'JFK';
-    input.dispatchEvent(new Event('input'));
+  it('should get destination airports', () => {
+    const mockAirports = [{ city: 'New York', code: 'JFK' }];
+    spyOn(apiService, 'getAllAirports').and.returnValue(of(mockAirports));
 
-    spyOn(apiService, 'getAirport').and.returnValue(of({
-      data: {
-        id: 'some-id',
-        type: 'some-type',
-        attributes: {
-          iata: 'LAX',
-          name: 'Los Angeles International Airport',
-          city: 'Los Angeles'
-        }
-      }
-    }));
+    component.getDestinationAirport({ target: { value: 'New' } } as any);
 
-    component.getOriginAirport({ target: input } as Event);
-    fixture.detectChanges();
-
-    const airportList = fixture.debugElement.query(By.css('ul'));
-    expect(airportList).toBeTruthy();
+    expect(component.resultsDestination).toEqual(mockAirports);
+    expect(component.destinationError).toBeFalse();
   });
 
-  it('should display destination airport suggestions', () => {
-    const input = fixture.debugElement.query(By.css('input[name="destination0"]')).nativeElement;
-    input.value = 'LAX';
-    input.dispatchEvent(new Event('input'));
+  it('should handle destination airport not found', () => {
+    spyOn(apiService, 'getAllAirports').and.returnValue(of([]));
 
-    spyOn(apiService, 'getAirport').and.returnValue(of({
-      data: {
-        id: 'some-id',
-        type: 'some-type',
-        attributes: {
-          iata: 'LAX',
-          name: 'Los Angeles International Airport',
-          city: 'Los Angeles'
-        }
-      }
-    } as AirportResponse));
-    component.getDestinationAirport({ target: input } as Event);
-    fixture.detectChanges();
+    component.getDestinationAirport({ target: { value: 'XYZ' } } as any);
 
-    const airportList = fixture.debugElement.query(By.css('ul'));
-    expect(airportList).toBeTruthy();
+    expect(component.resultsDestination.length).toBe(0);
+    expect(component.destinationError).toBeTrue();
   });
 
-  it('should calculate footprint and display results', () => {
-    spyOn(apiService, 'getFlightFootprint').and.returnValue(of({ footprint: 150 }));
-
-    component.flightForm.setValue({
-      origin0: 'JFK',
-      destination0: 'LAX',
-      origin1: 'LAX',
-      destination1: 'JFK',
+  it('should calculate footprint on submit', () => {
+    const mockFootprint = { footprint: 123 };
+    spyOn(apiService, 'getFlightFootprint').and.returnValue(of(mockFootprint));
+    component.flightForm.patchValue({
+      origin0: 'MXP',
+      destination0: 'JFK',
       cabin_class: 'economy',
-      numeroPasseggeri: '1',
-      currency1: 'USD',
-      currency2: 'EUR'
+      numeroPasseggeri: 3
     });
 
     component.onSubmit();
-    fixture.detectChanges();
 
-    setTimeout(() => {
-      fixture.detectChanges();
-      const footprintResult = fixture.debugElement.query(By.css('.footprint'));
-      expect(footprintResult.nativeElement.textContent).toContain('Here is the amount of CO2 produced by your air travel');
-      expect(footprintResult.nativeElement.textContent).toContain('Footprint for a passenger: 150');
-    }, 1000);
+    expect(component.footprint).toBe(123);
+    expect(component.risultatoFootprint).toBe(369); // 123 * 3
   });
 });

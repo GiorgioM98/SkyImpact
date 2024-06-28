@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../../servizi/api.service';
-import { error } from 'console';
 
 @Component({
   selector: 'app-home',
@@ -103,7 +102,7 @@ export class HomeComponent implements OnInit {
     const numeroPasseggeri = this.flightForm.value.numeroPasseggeri;
     const currency1 = "SEK";
     const currency2 = "USD";
-    console.log(origin0, destination0, origin1, destination1, cabin_class, numeroPasseggeri, currency1, currency2);
+    // console.log(origin0, destination0, origin1, destination1, cabin_class, numeroPasseggeri, currency1, currency2);
 
     const params = {
       'segments[0][origin]': origin0,
